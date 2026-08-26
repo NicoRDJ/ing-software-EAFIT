@@ -17,8 +17,7 @@ catalog/           SoftwareProduct — catálogo de productos vendibles
 licensing/         LicenseKey, ActivationRecord — inventario real y activaciones
 sales/             Customer, Order, OrderItem, Coupon, Payment — ventas
 notifications/     Notification, Notifier(s), NotificationFactory — envíos
-docs/wiki/         Contenido listo para pegar en el Wiki de GitHub
-DEFENSE_GUIDE.md   Guía de preparación para la sustentación oral
+docs/wiki/         Fuente de la Wiki técnica (también publicada en la pestaña Wiki del repo)
 ```
 
 Cada app Django representa un contexto acotado del dominio (catálogo, licenciamiento, ventas, notificaciones). `common/` no tiene modelos — solo excepciones de dominio y el traductor de excepciones a HTTP — por eso no está en `INSTALLED_APPS`. La justificación completa de esta estructura está en [`docs/wiki/Architecture.md`](docs/wiki/Architecture.md).
@@ -93,12 +92,4 @@ curl -X POST http://127.0.0.1:8000/api/orders/ \
 
 ## Documentación
 
-- [`docs/wiki/`](docs/wiki/) — contenido completo de la Wiki técnica (arquitectura, dominio, Service Layer, patrones, API, diagrama de secuencia, API Gateway, testing). Ver instrucciones de publicación abajo.
-
-### Publicar la Wiki en GitHub
-
-El Wiki de este repositorio no estaba habilitado al momento de esta entrega. Para publicarlo:
-
-1. En GitHub → Settings → Features → marcar **Wikis**.
-2. Abrir la pestaña **Wiki** del repo y crear la página `Home` (cualquier contenido, luego se reemplaza).
-3. Clonar `git@github.com:NicoRDJ/ing-software-EAFIT.wiki.git` y copiar cada archivo de `docs/wiki/*.md` como una página (mismo nombre sin `.md`), o pegar el contenido manualmente desde la interfaz web.
+La Wiki técnica completa está publicada en la pestaña **[Wiki](../../wiki)** de este repositorio (arquitectura, dominio, Service Layer, patrones, API, diagrama de secuencia, API Gateway, testing). El contenido fuente también vive en [`docs/wiki/`](docs/wiki/) por si la pestaña Wiki no está disponible para quien lo revise.
