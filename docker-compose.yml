@@ -15,12 +15,11 @@ services:
 
   web:
     build: .
-    # Migra, carga el catalogo de demo (idempotente) y arranca el servidor
-    command: sh -c "python manage.py migrate && python manage.py seed_tienda && python manage.py runserver 0.0.0.0:8000"
+    # CAMBIO 1: Usamos Gunicorn en lugar de runserver
+    # 'Tienda' es la carpeta donde esta nuestro wsgi.py
+    command: sh -c "python manage.py migrate && python manage.py seed_tienda && python manage.py collectstatic --noinput && gunicorn Tienda.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - .:/app
-    ports:
-      - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
@@ -28,7 +27,20 @@ services:
       - DB_NAME=tienda_db
       - DB_USER=postgres
       - DB_PASSWORD=secret_password
-      - DB_HOST=db # Nombre del servicio definido arriba
+      - DB_HOST=db
+      - DB_PORT=5432
+    # NOTA: Ya no hay seccion 'ports' aqui. Django esta aislado.
+
+  # CAMBIO 2: Agregamos el servicio Nginx
+  nginx:
+    image: nginx:1.25-alpine
+    ports:
+      - "80:80" # Nginx es el unico que da la cara a internet
+    volumes:
+      # Inyectamos nuestro archivo de configuracion en el contenedor
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - web
 
 volumes:
   postgres_data:
