@@ -8,6 +8,17 @@ El sistema modela un **marketplace de licencias de software** (venta de claves d
 
 Una decisión de diseño concreta viene directamente de la operación real del negocio: el soporte de múltiples canales de notificación (Email, SMS, WhatsApp) no es un capricho académico — nace de un hallazgo real de una auditoría operativa de MyLegitKeys, donde un cliente reportó no poder ser contactado ni por email ni por WhatsApp tras un problema. Modelar el canal como una dependencia intercambiable (ver `notifications/factories.py`) es la respuesta arquitectónica a ese problema real.
 
+## Ejecutar con Docker (monolito + microservicio)
+
+Desde el Taller 02 el proyecto corre como arquitectura híbrida: Nginx en el puerto 80 enruta `/api/v1/` al monolito Django y `/api/v2/notificaciones` al microservicio Flask (`servicios/notificaciones/`).
+
+```bash
+docker compose up -d --build
+curl http://localhost/api/v1/products/
+```
+
+Detalle y justificación: [Migración a Microservicios (Strangler Pattern)](https://github.com/NicoRDJ/ing-software-EAFIT/wiki/Migraci%C3%B3n-a-Microservicios-(Strangler-Pattern)).
+
 ## Arquitectura
 
 ```
@@ -17,6 +28,8 @@ catalog/           SoftwareProduct — catálogo de productos vendibles
 licensing/         LicenseKey, ActivationRecord — inventario real y activaciones
 sales/             Customer, Order, OrderItem, Coupon, Payment — ventas
 notifications/     Notification, Notifier(s), NotificationFactory — envíos
+servicios/         Microservicios extraídos del monolito (Taller 02: notificaciones en Flask)
+nginx/             Fachada del Strangler Pattern (ruteo v1 → Django, v2 → Flask)
 docs/wiki/         Fuente de la Wiki técnica (también publicada en la pestaña Wiki del repo)
 ```
 
