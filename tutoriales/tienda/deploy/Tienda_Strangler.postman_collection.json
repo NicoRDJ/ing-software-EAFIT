@@ -1,0 +1,22 @@
+{
+  "info": {
+    "name": "Tienda - Strangler Pattern (Tutorial 06)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [{ "key": "IP_AWS", "value": "CAMBIAR-POR-IP-PUBLICA" }],
+  "item": [
+    {
+      "name": "v1 - Productos (Django)",
+      "request": { "method": "GET", "url": "http://{{IP_AWS}}/api/v1/productos/" }
+    },
+    {
+      "name": "v2 - Comprar (Flask)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": { "mode": "raw", "raw": "{\n  \"producto_id\": 2,\n  \"cantidad\": 3\n}" },
+        "url": "http://{{IP_AWS}}/api/v2/comprar"
+      }
+    }
+  ]
+}
