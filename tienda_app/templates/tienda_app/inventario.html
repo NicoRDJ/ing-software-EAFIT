@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inventario</title>
+    <style>
+        body { font-family: sans-serif; margin: 2rem; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #ccc; padding: 8px 14px; text-align: left; }
+        th { background: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <h1>Inventario de la Tienda</h1>
+    <table>
+        <tr><th>ID</th><th>Libro</th><th>Precio</th><th>Stock</th><th></th></tr>
+        {% for inv in inventario %}
+        <tr>
+            <td>{{ inv.libro.id }}</td>
+            <td>{{ inv.libro.titulo }}</td>
+            <td>${{ inv.libro.precio }}</td>
+            <td><strong>{{ inv.cantidad }}</strong></td>
+            <td><a href="{% url 'compra_rapida' inv.libro.id %}">Compra rápida</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+    <p>Órdenes registradas: <strong>{{ total_ordenes }}</strong></p>
+</body>
+</html>

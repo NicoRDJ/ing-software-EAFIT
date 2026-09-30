@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compra Rápida</title>
+</head>
+<body>
+    <h1>Compra Rápida</h1>
+    <h2>{{ libro.titulo }}</h2>
+    <p>Precio con IVA: <strong>${{ total|floatformat:2 }}</strong></p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" style="padding: 10px 20px; background: #007bff; color: white; border: none; cursor: pointer;">
+            Comprar en un clic
+        </button>
+    </form>
+    <p><a href="{% url 'inventario' %}">Ver inventario</a></p>
+</body>
+</html>
