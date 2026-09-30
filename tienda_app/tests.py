@@ -58,3 +58,31 @@ class CompraViewTests(TestCase):
         resp = self.client.post(f"/compra/{self.libro.id}/")
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(Inventario.objects.get(libro=self.libro).cantidad, 1)
+
+
+class CompraAPITests(TestCase):
+    def setUp(self):
+        self.usuario = get_user_model().objects.create_user("ana", password="x")
+        self.libro = Libro.objects.create(titulo="GoF", precio=Decimal("165.00"))
+        Inventario.objects.create(libro=self.libro, cantidad=1)
+
+    @mock.patch.dict(os.environ, {"PAYMENT_PROVIDER": "MOCK"})
+    def test_api_crea_orden_y_descuenta_stock(self):
+        self.client.force_login(self.usuario)
+        resp = self.client.post("/api/v1/comprar/", {"libro_id": self.libro.id, "direccion_envio": "Calle 123"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 201)
+        self.assertEqual(resp.json()["estado"], "exito")
+        self.assertEqual(Libro.objects.get(id=self.libro.id).stock_actual, 0)
+
+    @mock.patch.dict(os.environ, {"PAYMENT_PROVIDER": "MOCK"})
+    def test_api_sin_stock_responde_409(self):
+        self.client.force_login(self.usuario)
+        datos = {"libro_id": self.libro.id, "direccion_envio": "Calle 123"}
+        self.client.post("/api/v1/comprar/", datos, content_type="application/json")
+        resp = self.client.post("/api/v1/comprar/", datos, content_type="application/json")
+        self.assertEqual(resp.status_code, 409)
+
+    def test_api_payload_invalido_responde_400(self):
+        self.client.force_login(self.usuario)
+        resp = self.client.post("/api/v1/comprar/", {"libro_id": "abc"}, content_type="application/json")
+        self.assertEqual(resp.status_code, 400)

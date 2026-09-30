@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
     'tienda_app',
 ]
 
@@ -118,6 +119,14 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 LOGIN_URL = '/admin/login/'
+
+REST_FRAMEWORK = {
+    # Sesion (interfaz web de DRF) y Basic (Postman / curl)
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ],
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

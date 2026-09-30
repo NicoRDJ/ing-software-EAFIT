@@ -8,6 +8,11 @@ class Libro(models.Model):
     def __str__(self):
         return self.titulo
 
+    @property
+    def stock_actual(self):
+        inventario = getattr(self, 'inventario', None)
+        return inventario.cantidad if inventario else 0
+
 class Inventario(models.Model):
     libro = models.OneToOneField(Libro, on_delete=models.CASCADE)
     cantidad = models.PositiveIntegerField()
