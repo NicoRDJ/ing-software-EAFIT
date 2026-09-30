@@ -18,12 +18,17 @@ El dominio está inspirado en un negocio real que opera el autor (**MyLegitKeys*
 | Diagrama de secuencia del flujo más complejo | ✅ — ver [Sequence-Diagram](Sequence-Diagram.md) |
 | Explicación de preparación para API Gateway | ✅ — ver [API-Gateway](API-Gateway.md) |
 
+## Taller 02 — Strangler Pattern
+
+Primer módulo extraído del monolito: **Notificaciones** pasa a un microservicio Flask detrás de Nginx. Matriz de decisión, arquitectura, separación técnica y evidencia en [Migración a Microservicios (Strangler Pattern)](Migración-a-Microservicios-(Strangler-Pattern)).
+
 ## Arquitectura general
 
 Cuatro apps Django por contexto acotado (`catalog`, `licensing`, `sales`, `notifications`) más un paquete `common/` sin modelos para excepciones de dominio y su traducción a HTTP. El detalle completo, con la justificación de por qué se organizó así, está en [Architecture](Architecture.md).
 
 ## Índice
 
+- [Migración a Microservicios (Strangler Pattern)](Migración-a-Microservicios-(Strangler-Pattern)) — Taller 02: módulo de notificaciones en Flask
 - [Architecture](Architecture.md) — estructura de carpetas y su justificación
 - [Domain-Model](Domain-Model.md) — entidades implementadas vs. propuestas
 - [Service-Layer](Service-Layer.md) — cómo y por qué existe esta capa
