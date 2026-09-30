@@ -1,8 +1,10 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import ListAPIView
 
-from .serializers import OrdenInputSerializer
+from .serializers import LibroSerializer, OrdenInputSerializer
+from tienda_app.models import Libro
 from tienda_app.services import CompraService  # <--- REUTILIZACION
 from tienda_app.infra.factories import PaymentFactory
 
@@ -43,3 +45,12 @@ class CompraAPIView(APIView):
         except Exception:
             # Errores inesperados
             return Response({"error": "Error interno"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class LibroListAPIView(ListAPIView):
+    """
+    GET /api/v1/productos/ — Catalogo servido por el monolito Django (v1).
+    Lectura pura sobre la BD: aqui basta una vista generica (sin Service Layer).
+    """
+    queryset = Libro.objects.select_related('inventario').order_by('id')
+    serializer_class = LibroSerializer

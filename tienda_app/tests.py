@@ -86,3 +86,12 @@ class CompraAPITests(TestCase):
         self.client.force_login(self.usuario)
         resp = self.client.post("/api/v1/comprar/", {"libro_id": "abc"}, content_type="application/json")
         self.assertEqual(resp.status_code, 400)
+
+
+class ProductosAPITests(TestCase):
+    def test_lista_productos_con_stock(self):
+        libro = Libro.objects.create(titulo="Refactoring", precio=Decimal("120.00"))
+        Inventario.objects.create(libro=libro, cantidad=7)
+        resp = self.client.get("/api/v1/productos/")
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json()[0]["stock_actual"], 7)
