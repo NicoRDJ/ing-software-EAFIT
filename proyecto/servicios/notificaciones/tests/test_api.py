@@ -1,7 +1,6 @@
 from unittest import mock
 
 import pytest
-
 from app.notifiers import EmailNotifier
 
 URL = "/api/v2/notificaciones"
