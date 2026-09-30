@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 
 class Libro(models.Model):
@@ -12,6 +13,8 @@ class Inventario(models.Model):
     cantidad = models.PositiveIntegerField()
 
 class Orden(models.Model):
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     libro = models.ForeignKey(Libro, on_delete=models.CASCADE)
     total = models.DecimalField(max_digits=10, decimal_places=2)
+    direccion_envio = models.CharField(max_length=200, blank=True, default="")
     fecha_creacion = models.DateTimeField(auto_now_add=True)

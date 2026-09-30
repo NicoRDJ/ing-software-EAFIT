@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 
 from tienda_app.models import Inventario, Libro
@@ -19,4 +20,8 @@ class Command(BaseCommand):
             Inventario.objects.get_or_create(libro=libro, defaults={"cantidad": cantidad})
             estado = "creado" if creado else "ya existía"
             self.stdout.write(f"  [{libro.id}] {libro.titulo} ({estado})")
+        User = get_user_model()
+        if not User.objects.filter(username="nicolas").exists():
+            User.objects.create_superuser("nicolas", "nicolas@tienda.local", "tienda2026")
+            self.stdout.write("  Usuario demo: nicolas / tienda2026")
         self.stdout.write(self.style.SUCCESS("Catálogo listo."))

@@ -1,13 +1,14 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 
-from .infra.gateways import BancoNacionalProcesador
+from .infra.factories import PaymentFactory
 from .models import Inventario, Orden
 from .services import CompraRapidaService, CompraService
 
 
-class CompraView(View):
+class CompraView(LoginRequiredMixin, View):
     """
     CBV: Vista Basada en Clases.
     Actúa como un "Portero": recibe la petición y delega al servicio.
@@ -16,7 +17,9 @@ class CompraView(View):
 
     # Configuramos el servicio con su implementación de infraestructura
     def setup_service(self):
-        gateway = BancoNacionalProcesador()
+        # ANTES: gateway = BancoNacionalProcesador()
+        # AHORA: Delegacion total a la Fabrica
+        gateway = PaymentFactory.get_processor()
         return CompraService(procesador_pago=gateway)
 
     def get(self, request, libro_id):
@@ -27,7 +30,7 @@ class CompraView(View):
     def post(self, request, libro_id):
         servicio = self.setup_service()
         try:
-            total = servicio.ejecutar_compra(libro_id, cantidad=1)
+            total = servicio.ejecutar_compra(libro_id, cantidad=1, usuario=request.user)
             return render(request, self.template_name, {
                 'mensaje_exito': f"¡Gracias por su compra! Total: ${total}",
                 'total': total
@@ -47,7 +50,7 @@ class CompraRapidaView(View):
     template_name = 'tienda_app/compra_rapida.html'
 
     def setup_service(self):
-        return CompraRapidaService(procesador_pago=BancoNacionalProcesador())
+        return CompraRapidaService(procesador_pago=PaymentFactory.get_processor())
 
     def get(self, request, libro_id):
         return render(request, self.template_name, self.setup_service().obtener_detalle(libro_id))
