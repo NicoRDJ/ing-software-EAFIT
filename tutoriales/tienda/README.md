@@ -1,6 +1,6 @@
 # Tienda — Tutoriales Arquitectura de Software 2026 (Nicolás Rodríguez)
 
-Proyecto base del curso (TEIS-DjangoSOLID) evolucionado tutorial a tutorial. Cada tutorial es un commit.
+Proyecto base del curso (TEIS-DjangoSOLID) evolucionado tutorial a tutorial. Cada tutorial es un commit (historial conservado al importarlo a `tutoriales/tienda/`). Todos los comandos se corren dentro de esta carpeta.
 
 | Tutorial | Qué agrega |
 |---|---|
@@ -30,6 +30,6 @@ docker compose up -d --build
 
 ## Desplegar en AWS EC2 (Amazon Linux 2023)
 ```bash
-curl -fsSL https://raw.githubusercontent.com/NicoRDJ/tienda-arquitectura-2026/main/deploy/ec2_setup.sh | bash
+curl -fsSL https://raw.githubusercontent.com/NicoRDJ/ing-software-EAFIT/main/tutoriales/tienda/deploy/ec2_setup.sh | bash
 ```
 Security Group: abrir HTTP (80).

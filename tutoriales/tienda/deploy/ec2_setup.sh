@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Tutorial 04 - Paso 4.3/4.4: preparar la instancia EC2 (Amazon Linux 2023) y desplegar.
 # Uso en EC2 Instance Connect:
-#   curl -fsSL https://raw.githubusercontent.com/NicoRDJ/tienda-arquitectura-2026/main/deploy/ec2_setup.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/NicoRDJ/ing-software-EAFIT/main/tutoriales/tienda/deploy/ec2_setup.sh | bash
 set -e
-REPO_URL="${REPO_URL:-https://github.com/NicoRDJ/tienda-arquitectura-2026.git}"
-DIR="$HOME/tienda-arquitectura-2026"
+REPO_URL="${REPO_URL:-https://github.com/NicoRDJ/ing-software-EAFIT.git}"
+DIR="$HOME/ing-software-EAFIT"
 
 # Actualizar el sistema e instalar Git y Docker
 sudo dnf update -y
@@ -20,7 +20,7 @@ sudo chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
 
 # Clonar (o actualizar) el repositorio y levantar la arquitectura
 if [ -d "$DIR/.git" ]; then git -C "$DIR" pull origin main; else git clone "$REPO_URL" "$DIR"; fi
-cd "$DIR"
+cd "$DIR/tutoriales/tienda"
 sudo docker compose up -d --build
 sudo docker ps
 
